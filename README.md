@@ -15,3 +15,7 @@ Manage several sensors, monitors (that read sensor events, and create new events
 ## Questions:
 * Kafka limitations (How large can messages be? Can one send whole images or is it better to create a central storage and send file references only?)
 * starting monitors up: how to ensure they receive recent data from the topics - especially important for for infrequently generated data, e.g. from other monitors)
+
+## Links:
+* Kafka Docker setup: https://www.baeldung.com/ops/kafka-docker-setup - needing to update the KAFKA_ADVERTISED_LISTENERS: instead of localhost use the name/IP of the host it is running on (see: https://github.com/wurstmeister/kafka-docker/blob/master/README.md)
+* Kafka Python client: https://kafka-python.readthedocs.io/en/master/index.html
