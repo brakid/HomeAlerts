@@ -32,3 +32,4 @@ def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
 ## Links:
 * Kafka Docker setup: https://www.baeldung.com/ops/kafka-docker-setup - needing to update the KAFKA_ADVERTISED_LISTENERS: instead of localhost use the name/IP of the host it is running on (see: https://github.com/wurstmeister/kafka-docker/blob/master/README.md)
 * Kafka Python client: https://kafka-python.readthedocs.io/en/master/index.html
+* Kafka Concepts: https://www.youtube.com/watch?v=Ch5VhJzaoaI
