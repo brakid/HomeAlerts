@@ -16,6 +16,19 @@ Manage several sensors, monitors (that read sensor events, and create new events
 * Kafka limitations (How large can messages be? Can one send whole images or is it better to create a central storage and send file references only?)
 * starting monitors up: how to ensure they receive recent data from the topics - especially important for for infrequently generated data, e.g. from other monitors)
 
+## Monitor Ideas:
+* Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
+  * https://ifttt.com/location
+  * Webcam with motion detector (difference between 2 consequtive images)
+```python
+def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
+    diff = cv2.absdiff(img1, img2)
+    eroded_diff = cv2.erode(diff, KERNEL, cv2.BORDER_REFLECT)
+    motion = np.mean(eroded_diff) > MOTION_THRESHOLD
+
+    return motion
+```
+
 ## Links:
 * Kafka Docker setup: https://www.baeldung.com/ops/kafka-docker-setup - needing to update the KAFKA_ADVERTISED_LISTENERS: instead of localhost use the name/IP of the host it is running on (see: https://github.com/wurstmeister/kafka-docker/blob/master/README.md)
 * Kafka Python client: https://kafka-python.readthedocs.io/en/master/index.html
