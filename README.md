@@ -18,10 +18,13 @@ Manage several sensors, monitors (that read sensor events, and create new events
 * starting monitors up: how to ensure they receive recent data from the topics - especially important for for infrequently generated data, e.g. from other monitors)
   * A: change consumer setting to receive all messages in the topic (```auto_offset_reset='earliest'```, see: [KafkaConsumer](https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html)), by default the Kafka Docker keeps data for the Confluent Kafka Docker image is set to 1 day ([Confluent](https://docs.confluent.io/platform/current/installation/configuration/topic-configs.html#delete-retention-ms), [Retention](https://www.baeldung.com/kafka-message-retention))
 
-## Monitor Ideas:
-* Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
-  * https://ifttt.com/location
-  * Webcam with motion detector (difference between 2 consequtive images)
+## Implemented Sensors, Monitors and Actors:
+### Sensors
+* Temperature Sensor: read the current temperature ([Raspberry Pi & DB18B20 Temperature Sensor](https://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/)) -> send to a ```temperature```topic
+* Webcam Sensor: read an image from a webcam every ```X```seconds, convert to a base64 encoded string -> send to a ```webcam```topic
+### Monitors
+* Temperature Monitor: Temperature < ```THRESHOLD```or Temperature > ```THRESHOLD```-> send an alert to an ```alert``` topic
+* Motion Detector: compare 2 webcam images, if the difference exceed a threshold -> send an alert
 ```python
 def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
     diff = cv2.absdiff(img1, img2)
@@ -30,6 +33,12 @@ def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
 
     return motion
 ```
+### Actors
+* [Telegram Bot Actor](https://core.telegram.org/bots/api): react on all alerts to [send a message](https://python-telegram-bot.org/) to the owner of the sensors
+
+## Monitor Ideas:
+* Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
+  * https://ifttt.com/location
 
 ## Links:
 * Kafka Docker setup: https://www.baeldung.com/ops/kafka-docker-setup - needing to update the KAFKA_ADVERTISED_LISTENERS: instead of localhost use the name/IP of the host it is running on (see: https://github.com/wurstmeister/kafka-docker/blob/master/README.md)
