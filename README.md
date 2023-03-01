@@ -14,7 +14,9 @@ Manage several sensors, monitors (that read sensor events, and create new events
 
 ## Questions:
 * Kafka limitations (How large can messages be? Can one send whole images or is it better to create a central storage and send file references only?)
+  * A: up to 1MB, for the image case: reduce the image size (640 x 480), encode as JPEG
 * starting monitors up: how to ensure they receive recent data from the topics - especially important for for infrequently generated data, e.g. from other monitors)
+  * A: change consumer setting to receive all messages in the topic (```auto_offset_reset='earliest'```, see: [KafkaConsumer](https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html)), by default the Kafka Docker keeps data for the Confluent Kafka Docker image is set to 1 day ([Confluent](https://docs.confluent.io/platform/current/installation/configuration/topic-configs.html#delete-retention-ms), [Retention](https://www.baeldung.com/kafka-message-retention))
 
 ## Monitor Ideas:
 * Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
