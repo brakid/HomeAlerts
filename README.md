@@ -39,6 +39,8 @@ def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
 ## Monitor Ideas:
 * Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
   * https://ifttt.com/location
+* object tracking: identfy objects in the webcam image and track them over time (detect objects ([Yolo](https://arxiv.org/abs/1506.02640)), identify them across frames [SIFT](https://en.wikipedia.org/wiki/Scale-invariant_feature_transform))
+* object recognition: run [face recognition](https://machinelearningmastery.com/how-to-develop-a-face-recognition-system-using-facenet-in-keras-and-an-svm-classifier/) to check for known faces
 
 ## Links:
 * Kafka Docker setup: https://www.baeldung.com/ops/kafka-docker-setup - needing to update the KAFKA_ADVERTISED_LISTENERS: instead of localhost use the name/IP of the host it is running on (see: https://github.com/wurstmeister/kafka-docker/blob/master/README.md)
