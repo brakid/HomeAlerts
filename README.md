@@ -48,3 +48,4 @@ def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
 * Kafka Concepts: https://www.youtube.com/watch?v=Ch5VhJzaoaI
 * NodeJS Kafka: https://kafka.js.org
 * Typescript & Babel: https://babeljs.io/docs/babel-preset-typescript#installation
+* SocketIO: https://socket.io/
