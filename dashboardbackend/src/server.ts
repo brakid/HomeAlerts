@@ -56,7 +56,7 @@ const startDashboard = async () => {
   const consumer = kafka.consumer({ groupId: 'dashboard' });
 
   await consumer.connect();
-  await consumer.subscribe({ topics: ['webcam', 'host_discovered', 'temperature'] });
+  await consumer.subscribe({ topics: ['webcam', 'host_discovered', 'temperature'], fromBeginning: false });
 
   await consumer.run({
     eachMessage: async ({ topic, message }) => {
