@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { Kafka, Message } from 'kafkajs';
 import { Mutex } from 'async-mutex';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IsAtHome {
   value: boolean
@@ -59,7 +60,7 @@ const startDashboard = async () => {
     brokers: [process.env.KAFKA_BROKER || '']
   });
 
-  const consumer = kafka.consumer({ groupId: 'dashboard3' });
+  const consumer = kafka.consumer({ groupId: uuidv4() });
 
   await consumer.connect();
   await consumer.subscribe({ topics: ['webcam', 'host_discovered', 'temperature'], fromBeginning: false });
