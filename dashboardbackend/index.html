@@ -16,7 +16,7 @@
 
   <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
   <script>
-    const socket = io("http://localhost:8080");
+    const socket = io("http://hagenpc.fritz.box:8082");
     const image = document.getElementById("webcam");
     const isAtHome = document.getElementById("isAtHome");
     const temperature = document.getElementById("temperature");
@@ -31,9 +31,9 @@
 
     socket.on('status', message => {
       console.log(message);
-      image.src = message.webcam;
-      isAtHome.innerText = message.isAtHome;
-      temperature.innerText = message.temperature + '°C';
+      image.src = message.webcam.data;
+      isAtHome.innerText = message.isAtHome.data + ' ' + new Date(message.isAtHome.timestamp).toISOString();
+      temperature.innerText = message.temperature.data + '°C';
     });
   </script>
 </body>

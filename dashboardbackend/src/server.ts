@@ -10,26 +10,32 @@ interface Temperature {
   value: number
 };
 
+interface Data<T> {
+  timestamp: number,
+  data: T,
+};
+
 interface Status {
-  webcam: string,
-  isAtHome: boolean,
-  temperature: number
+  webcam: Data<string>,
+  isAtHome: Data<boolean>,
+  temperature: Data<number>,
 };
 
 const handleMessage = (message: Message, topic: string, status: Status, io: Server): void => {
   const messageContent = getMessageContent(message);
+  const timestamp = parseInt(message.timestamp || '0', 10);
   console.log(`Topic: ${topic}`);
   switch (topic) {
     case 'webcam': {
-      status.webcam = 'data:image/jpeg;base64,' + messageContent.replaceAll('"', '');
+      status.webcam = { timestamp, data: 'data:image/jpeg;base64,' + messageContent.replaceAll('"', '') };
       break;
     }
     case 'host_discovered': {
-      status.isAtHome = parseAs<IsAtHome>(messageContent).value;
+      status.isAtHome = { timestamp, data: parseAs<IsAtHome>(messageContent).value };
       break;
     }
     case 'temperature': {
-      status.temperature = parseAs<Temperature>(messageContent).value;
+      status.temperature = { timestamp, data: parseAs<Temperature>(messageContent).value };
       break;
     }
   }
@@ -47,13 +53,13 @@ const parseAs = <T>(value: string): T => {
 const startDashboard = async () => {
   const io = new Server(8080, { cors: { origin: '*' } });
   const mutex = new Mutex();
-  const status = { isAtHome: false, webcam: '', temperature: 0.0 };
+  const status: Status = { isAtHome: { timestamp: 0, data: false }, webcam: { timestamp:0, data: '' }, temperature: { timestamp: 0, data: 0.0 } };
 
   const kafka = new Kafka({
     brokers: [process.env.KAFKA_BROKER || '']
   });
 
-  const consumer = kafka.consumer({ groupId: 'dashboard' });
+  const consumer = kafka.consumer({ groupId: 'dashboard3' });
 
   await consumer.connect();
   await consumer.subscribe({ topics: ['webcam', 'host_discovered', 'temperature'], fromBeginning: false });
