@@ -35,6 +35,7 @@ def detect_motion(img1: np.ndarray, img2: np.ndarray) -> bool:
 ```
 ### Actors
 * [Telegram Bot Actor](https://core.telegram.org/bots/api): react on all alerts to [send a message](https://python-telegram-bot.org/) to the owner of the sensors
+* Dashboard: aggregate current status
 
 ## Monitor Ideas:
 * Geofencing & Security Webcam -> leave the house -> enable motion detection, disable when coming back
