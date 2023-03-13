@@ -5,6 +5,7 @@ import { merge } from './utils';
 import WebcamImage from './WebcamImage';
 import TemperatureChart from './TemperatureChart';
 import IsAtHomeComponent from './IsAtHomeComponent';
+import { FaBell } from 'react-icons/fa'
 
 const backendUrl = process.env.REACT_APP_BACKEND || '';
 
@@ -49,13 +50,22 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      { isConnected && <div>
+    <div className='container-sm d-flex flex-column align-items-center'>
+      <div className='row mb-4 d-flex flex-column align-items-center'>
+        <h1>HomeAlerts</h1>
+        <FaBell />
+        <h2>Monitoring Dashboard</h2>
+      </div>
+      { isConnected && <div className='mb-4'>
         <WebcamImage data={ internalState.image } />
         <TemperatureChart data={ internalState.temperatures } />
         <IsAtHomeComponent data={ internalState.isAtHome } />
       </div> }
-      { !!!isConnected && <p>Is not Connected</p> }
+      { !!!isConnected && <div className='alert alert-danger' role={ 'alert' }>Not connected to the dashboard backend</div> }
+      <div className='row mb-4 d-flex flex-column align-items-center'>
+        <a className='text-muted' href='https://www.hagen-schupp.me'>Hagen Schupp</a>
+        <p className='text-muted'>&copy; 2023</p>
+      </div>
     </div>
   );
 };

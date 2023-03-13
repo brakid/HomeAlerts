@@ -16,12 +16,12 @@ const WebcamImage = ({ data: imageData }: SingleDataProps<string>) => {
   }, [imageData]);
 
   return (
-    <div>
-      <img ref={ image } alt='Webcam' />
-      <div>
-        <span>Timestamp: { formatDate(new Date(timestamp)) }</span>
+    <section className='card mb-4 d-flex flex-column align-items-center shadow-sm'>
+      <img className='card-img-top' ref={ image } alt='Webcam' style={{ width: '320px', height: '240px' }} />
+      <div className='card-body'>
+        { timestamp > 0 &&  (<p className='card-text'>Timestamp: { formatDate(new Date(timestamp)) }</p>) }
       </div>
-    </div>
+    </section>
   )
 };
 
