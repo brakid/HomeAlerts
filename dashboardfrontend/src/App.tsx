@@ -6,6 +6,8 @@ import WebcamImage from './WebcamImage';
 import TemperatureChart from './TemperatureChart';
 import IsAtHomeComponent from './IsAtHomeComponent';
 
+const backendUrl = process.env.REACT_APP_BACKEND || '';
+
 const App = () => {
   const [ isConnected, setIsConnected ] = useState<boolean>(false);
   const [ internalState, setInternalState ] = useState<InternalState>({ 
@@ -15,7 +17,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    const socket = io('http://hagenpc.fritz.box:8082');
+    const socket = io(backendUrl);
 
     const handleStateUpdate = (status: Status) => {
       setInternalState(internalState => {
