@@ -16,6 +16,10 @@ const handleMessage = (message: Message, topic: string, status: Status, io: Serv
       status.webcam = { timestamp, data: 'data:image/jpeg;base64,' + messageContent.replaceAll('"', '') };
       break;
     }
+    case 'webcam2': {
+      status.webcam2 = { timestamp, data: 'data:image/jpeg;base64,' + messageContent.replaceAll('"', '') };
+      break;
+    }
     case 'host_discovered': {
       status.isAtHome = { timestamp, data: parseAs<IsAtHome>(messageContent).value };
       break;
@@ -35,7 +39,7 @@ const getMessageContent = (message: Message): string => {
 const startDashboard = async () => {
   const io = new Server(8080, { cors: { origin: '*' } });
   const mutex = new Mutex();
-  const status: Status = { isAtHome: { timestamp: 0, data: false }, webcam: { timestamp:0, data: '' }, temperatures: [] };
+  const status: Status = { isAtHome: { timestamp: 0, data: false }, webcam: { timestamp:0, data: '' }, webcam2: { timestamp:0, data: '' }, temperatures: [] };
 
   const kafka = new Kafka({
     brokers: [process.env.KAFKA_BROKER || '']
@@ -44,7 +48,7 @@ const startDashboard = async () => {
   const consumer = kafka.consumer({ groupId: uuidv4() });
 
   await consumer.connect();
-  await consumer.subscribe({ topics: ['webcam', 'host_discovered', 'temperature'], fromBeginning: false });
+  await consumer.subscribe({ topics: ['webcam', 'webcam2', 'host_discovered', 'temperature'], fromBeginning: false });
 
   io.on('connect', socket => {
     mutex.acquire();

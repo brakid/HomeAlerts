@@ -12,6 +12,7 @@ const App = () => {
   const [ isConnected, setIsConnected ] = useState<boolean>(false);
   const [ status, setStatus ] = useState<Status>({ 
     webcam: { data: '', timestamp: 0 },
+    webcam2: { data: '', timestamp: 0 },
     temperatures: [],
     isAtHome: { data: false, timestamp: 0 }
   });
@@ -39,6 +40,7 @@ const App = () => {
       </div>
       { isConnected && <div className='mb-4'>
         <WebcamImage data={ status.webcam } />
+        <WebcamImage data={ status.webcam2 } />
         <TemperatureChart data={ status.temperatures } />
         <IsAtHomeComponent data={ status.isAtHome } />
       </div> }

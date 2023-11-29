@@ -13,6 +13,7 @@ export interface Data<T> {
 
 export interface Status {
   webcam: Data<string>,
+  webcam2: Data<string>,
   isAtHome: Data<boolean>,
   temperatures: Data<number>[],
 };
