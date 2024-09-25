@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -63,6 +65,8 @@ func main() {
 	capacities["webcam"] = 1
 	capacities["webcam2"] = 1
 
+	image_topics := []string{"webcam", "webcam2"}
+
 	data := CreateDatabase(capacities)
 	c := make(chan Message, 10)
 
@@ -94,6 +98,38 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
 			"topic": topic,
 			"data":  values,
+		})
+	})
+	authorized.GET("/image/:topic", func(c *gin.Context) {
+		topic := c.Param("topic")
+
+		if slices.Contains(image_topics, topic) {
+			values, err := data.Get(topic)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+			if len(values) == 0 {
+				c.JSON(http.StatusNotFound, gin.H{
+					"error": "Not found",
+				})
+				return
+			}
+
+			data, err := base64.StdEncoding.DecodeString(values[len(values)-1].Content["value"].(string))
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+			c.Data(http.StatusOK, "image/jpeg", data)
+			return
+		}
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Not found",
 		})
 	})
 	r.Run(fmt.Sprintf(":%v", port))
