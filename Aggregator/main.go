@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/segmentio/kafka-go"
@@ -17,7 +18,7 @@ func convertToJson(content []byte) map[string]any {
 	err := json.Unmarshal(content, &data)
 	if err != nil {
 		topicData := make(map[string]any)
-		topicData["value"] = string(content)
+		topicData["value"] = strings.Replace(string(content), "\"", "", -1)
 
 		return topicData
 	} else {
