@@ -64,6 +64,8 @@ func main() {
 	capacities["host_discovered"] = 1
 	capacities["webcam"] = 1
 	capacities["webcam2"] = 1
+	capacities["webcam_presence"] = 1
+	capacities["webcam2_presence"] = 1
 
 	image_topics := []string{"webcam", "webcam2"}
 
